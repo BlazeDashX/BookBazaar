@@ -1,5 +1,9 @@
-using BLL.DTOs;
+using DAL.EF;
+using DAL.EF.Tables;
 using DAL.Repos;
+using BLL.DTOs;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BLL.Services
 {
@@ -9,40 +13,32 @@ namespace BLL.Services
 
         public BookService()
         {
-            repo = new BookRepository();
+            var db = new BookShopDbContext();
+            repo = new BookRepository(db);
         }
 
-        public List<BookDTO> GetAllBooks()
+        public List<BookDTO> Get()
         {
-            var data = repo.GetAll();
-
-            var books = new List<BookDTO>();
-
-            foreach (var b in data)
-            {
-                books.Add(new BookDTO
+            return repo.Get()
+                .Select(b => new BookDTO
                 {
                     Id = b.Id,
                     Title = b.Title,
                     Author = b.Author,
-                    Description = b.Description,
                     Price = b.Price,
                     Stock = b.Stock,
+                    Description = b.Description,
                     CoverImageUrl = b.CoverImageUrl,
                     Publisher = b.Publisher,
                     PublishedYear = b.PublishedYear,
                     Language = b.Language,
-                    CategoryName = b.Category.Name
-                });
-            }
-
-            return books;
+                    CategoryName = b.Category?.Name ?? ""
+                }).ToList();
         }
 
-        public BookDTO? GetBook(int id)
+        public BookDTO? Get(int id)
         {
-            var b = repo.GetById(id);
-
+            var b = repo.Get(id);
             if (b == null) return null;
 
             return new BookDTO
@@ -50,15 +46,41 @@ namespace BLL.Services
                 Id = b.Id,
                 Title = b.Title,
                 Author = b.Author,
-                Description = b.Description,
                 Price = b.Price,
                 Stock = b.Stock,
+                Description = b.Description,
                 CoverImageUrl = b.CoverImageUrl,
                 Publisher = b.Publisher,
                 PublishedYear = b.PublishedYear,
                 Language = b.Language,
-                CategoryName = b.Category.Name
+                CategoryName = b.Category?.Name ?? ""
             };
+        }
+
+        public bool Create(BookCreateDTO dto)
+        {
+            var book = new Book
+            {
+                Title = dto.Title,
+                Author = dto.Author,
+
+                Isbn = dto.Isbn,
+                Description = dto.Description,
+                Price = dto.Price,
+                Stock = dto.Stock,
+
+                CoverImageUrl = dto.CoverImageUrl,
+                Publisher = dto.Publisher,
+                PublishedYear = dto.PublishedYear,
+                Language = dto.Language,
+
+                CategoryId = dto.CategoryId,
+
+                IsActive = true,
+                CreatedAt = DateTime.Now
+            };
+
+            return repo.Create(book);
         }
     }
 }

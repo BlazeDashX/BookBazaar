@@ -17,7 +17,14 @@ public partial class BookShopDbContext : DbContext
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=DefaultConnection");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(
+                "Data Source=localhost\\SQLEXPRESS01;Initial Catalog=BookShopDB;TrustServerCertificate=True;Integrated Security=True;"
+            );
+        }
+    }
 
     public virtual DbSet<Book> Books { get; set; }
 

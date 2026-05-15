@@ -5,28 +5,18 @@ namespace APP.Controllers
 {
     public class BookController : Controller
     {
-        private readonly BookService service;
-
-        public BookController()
-        {
-            service = new BookService();
-        }
+        private readonly BookService service = new BookService();
 
         public IActionResult Index()
         {
-            var books = service.GetAllBooks();
-
+            var books = service.Get();
             return View(books);
         }
 
         public IActionResult Details(int id)
         {
-            var book = service.GetBook(id);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
+            var book = service.Get(id);
+            if (book == null) return NotFound();
 
             return View(book);
         }
