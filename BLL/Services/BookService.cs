@@ -32,7 +32,7 @@ namespace BLL.Services
                     Publisher = b.Publisher,
                     PublishedYear = b.PublishedYear,
                     Language = b.Language,
-                    CategoryName = b.Category?.Name ?? ""
+                    CategoryName = b.Category != null ? b.Category.Name : ""
                 })
                 .ToList();
         }
@@ -42,9 +42,7 @@ namespace BLL.Services
             var b = repo.Get(id);
 
             if (b == null)
-            {
                 return null;
-            }
 
             return new BookDTO
             {
@@ -86,6 +84,33 @@ namespace BLL.Services
             };
 
             return repo.Create(book);
+        }
+
+        public bool Update(BookUpdateDTO dto)
+        {
+            var book = repo.Get(dto.Id);
+
+            if (book == null)
+                return false;
+
+            book.Title = dto.Title;
+            book.Author = dto.Author;
+            book.Isbn = dto.Isbn;
+            book.Description = dto.Description;
+            book.Price = dto.Price;
+            book.Stock = dto.Stock;
+            book.CoverImageUrl = dto.CoverImageUrl;
+            book.Publisher = dto.Publisher;
+            book.PublishedYear = dto.PublishedYear;
+            book.Language = dto.Language;
+            book.CategoryId = dto.CategoryId;
+
+            return repo.Update(book);
+        }
+
+        public bool Delete(int id)
+        {
+            return repo.Delete(id);
         }
     }
 }

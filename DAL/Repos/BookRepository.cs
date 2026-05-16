@@ -16,11 +16,7 @@ namespace DAL.Repos
             this.db = db;
         }
 
-        public bool Create(Book b)
-        {
-            db.Books.Add(b);
-            return db.SaveChanges() > 0;
-        }
+
 
         public List<Book> Get()
         {
@@ -37,27 +33,42 @@ namespace DAL.Repos
                      .FirstOrDefault(b => b.Id == id);
         }
 
+        public bool Create(Book b)
+        {
+            db.Books.Add(b);
+            return db.SaveChanges() > 0;
+        }
+
         public bool Update(Book b)
         {
-            var exobj = Get(b.Id);
+            var exobj = db.Books.FirstOrDefault(x => x.Id == b.Id);
 
             if (exobj == null)
-            {
                 return false;
-            }
 
-            db.Entry(exobj).CurrentValues.SetValues(b);
+            exobj.Title = b.Title;
+            exobj.Author = b.Author;
+            exobj.Price = b.Price;
+            exobj.Stock = b.Stock;
+            exobj.Description = b.Description;
+            exobj.CoverImageUrl = b.CoverImageUrl;
+            exobj.Publisher = b.Publisher;
+            exobj.PublishedYear = b.PublishedYear;
+            exobj.Language = b.Language;
+            exobj.CategoryId = b.CategoryId;
+
             return db.SaveChanges() > 0;
         }
 
         public bool Delete(int id)
         {
-            var exobj = Get(id);
-            if (exobj == null)
-            {
+            var book = db.Books.FirstOrDefault(x => x.Id == id);
+
+            if (book == null)
                 return false;
-            }
-            exobj.IsActive = false;
+
+            book.IsActive = false;
+
             return db.SaveChanges() > 0;
         }
     }

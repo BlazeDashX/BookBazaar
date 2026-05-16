@@ -1,42 +1,56 @@
 ﻿@model BLL.DTOs.BookCreateDTO
 
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<div class="max-w-3xl mx-auto bg-white p-6 shadow rounded mt-6">
 
-<div class="max-w-3xl mx-auto mt-10 bg-white p-8 shadow rounded">
-
-    <h2 class="text-2xl font-bold mb-6">Add New Book</h2>
+    <h1 class="text-2xl font-bold mb-6">Add New Book</h1>
 
     <form method="post" class="space-y-4">
 
-        <input name="Title" placeholder="Title" class="border p-2 w-full" />
-        <input name="Author" placeholder="Author" class="border p-2 w-full" />
+        <input name="Title" placeholder="Title"
+               class="w-full border p-2 rounded" />
 
-        <input name="Isbn" placeholder="ISBN" class="border p-2 w-full" />
+        <input name="Author" placeholder="Author"
+               class="w-full border p-2 rounded" />
 
-        <textarea name="Description" placeholder="Description" class="border p-2 w-full"></textarea>
+        <input name="Isbn" placeholder="ISBN"
+               class="w-full border p-2 rounded" />
 
-        <input name="Price" type="number" step="0.01" placeholder="Price" class="border p-2 w-full" />
+        <textarea name="Description" placeholder="Description"
+                  class="w-full border p-2 rounded"></textarea>
 
-        <input name="Stock" type="number" placeholder="Stock" class="border p-2 w-full" />
+        <div class="grid grid-cols-2 gap-4">
 
-        <input name="CoverImageUrl" placeholder="Cover Image URL" class="border p-2 w-full" />
+            <input name="Price" type="number" placeholder="Price"
+                   class="border p-2 rounded" />
 
-        <input name="Publisher" placeholder="Publisher" class="border p-2 w-full" />
+            <input name="Stock" type="number" placeholder="Stock"
+                   class="border p-2 rounded" />
 
-        <input name="PublishedYear" type="number" placeholder="Published Year" class="border p-2 w-full" />
+        </div>
 
-        <input name="Language" placeholder="Language" class="border p-2 w-full" />
+        <input name="CoverImageUrl" placeholder="Image URL"
+               class="w-full border p-2 rounded" />
 
-        <select name="CategoryId" class="border p-2 w-full">
-            @foreach (var cat in ViewBag.Categories)
+        <input name="Publisher" placeholder="Publisher"
+               class="w-full border p-2 rounded" />
+
+        <input name="PublishedYear" placeholder="Published Year"
+               class="w-full border p-2 rounded" />
+
+        <input name="Language" placeholder="Language"
+               class="w-full border p-2 rounded" />
+
+        <select name="CategoryId"
+                class="w-full border p-2 rounded">
+
+            @foreach (var c in ViewBag.Categories)
             {
-                <option value="@cat.Id">@cat.Name</option>
+                <option value="@c.Id">@c.Name</option>
             }
+
         </select>
 
-        <button type="submit" class="bg-black text-white px-4 py-2 rounded">
+        <button class="w-full bg-black text-white p-2 rounded hover:bg-gray-800">
             Save Book
         </button>
 
