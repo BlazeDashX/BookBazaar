@@ -10,7 +10,7 @@ namespace APP.Controllers
 
         public IActionResult Create()
         {
-            var categories = new CategoryService().GetAll();
+            var categories = new CategoryService().Get();
             ViewBag.Categories = categories;
 
             return View();
@@ -25,7 +25,7 @@ namespace APP.Controllers
                 return RedirectToAction("Index", "Book");
             }
 
-            ViewBag.Categories = new CategoryService().GetAll();
+            ViewBag.Categories = new CategoryService().Get();
             return View(dto);
         }
     }

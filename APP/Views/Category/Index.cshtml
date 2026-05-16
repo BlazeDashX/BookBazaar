@@ -1,0 +1,57 @@
+﻿@model List<BLL.DTOs.CategoryDTO>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Categories</h1>
+
+    <a href="/Category/Create"
+           class="bg-black text-white px-4 py-2 rounded">
+        + Add Category
+    </a>
+</div>
+
+<div class="bg-white shadow rounded-lg p-4">
+
+    <table class="w-full border-collapse">
+        <thead>
+            <tr class="border-b">
+                <th class="text-left p-2">Name</th>
+                <th class="text-left p-2">Description</th>
+                <th class="text-left p-2">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="border-b">
+                    <td class="p-2">@item.Name</td>
+                    <td class="p-2">@item.Description</td>
+
+                    <td class="p-2 flex gap-2">
+                        <div class="flex gap-2">
+
+                            <a href="/Category/Edit/@item.Id"
+                                   class="bg-blue-500 text-white px-3 py-1 rounded">
+                                Edit
+                            </a>
+
+                            <form method="post" action="/Category/Delete">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button class="bg-red-500 text-white px-3 py-1 rounded">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

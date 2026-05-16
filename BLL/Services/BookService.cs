@@ -33,13 +33,18 @@ namespace BLL.Services
                     PublishedYear = b.PublishedYear,
                     Language = b.Language,
                     CategoryName = b.Category?.Name ?? ""
-                }).ToList();
+                })
+                .ToList();
         }
 
         public BookDTO? Get(int id)
         {
             var b = repo.Get(id);
-            if (b == null) return null;
+
+            if (b == null)
+            {
+                return null;
+            }
 
             return new BookDTO
             {
